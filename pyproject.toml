@@ -1,0 +1,41 @@
+[project]
+name = "darfweb"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Celso Fassoni", email = "cfassoni@users.noreply.github.com" }
+]
+requires-python = ">=3.13"
+dependencies = [
+    "pydantic>=2.0"
+]
+
+[project.scripts]
+darf-cli = "darfweb.cli.main:cli"
+
+[build-system]
+requires = ["uv_build>=0.9.7,<0.10.0"]
+build-backend = "uv_build"
+
+[tool.uv-build]
+packages = ["src/darfweb"]
+
+[project.optional-dependencies]
+api = [
+    "fastapi[standard]>=0.121.2",
+    "sqlmodel>=0.0.27",
+]
+cli = [
+ "argparse>=1.4.0",
+]
+core = [
+    "pypdf2>=3.0.0",
+    "python-magic-bin>=0.4.14",
+]
+
+[dependency-groups]
+dev = [
+    "darfweb[api,cli,core]",
+    "ipykernel>=7.1.0",
+]

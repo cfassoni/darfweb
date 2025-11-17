@@ -1,0 +1,144 @@
+{
+    "camelot": [
+        {
+            "camelotModel": "genial_bmf",
+            "camelotConfig": {
+                "areas": [
+                    "440, 796, 564, 778",
+                    "23, 776, 438, 723",
+                    "23, 721, 437, 664",
+                    "440, 720, 564, 664",
+                    "23, 660, 564, 276",
+                    "23, 274, 564, 191",
+                    "23, 274, 564, 191"
+                ],
+                "columns": [
+                    "478, 510",
+                    "",
+                    "100",
+                    "480,508",
+                    "38, 110, 171, 234, 302, 334, 412, 480, 497",
+                    "129, 237, 344, 452",
+                    "129, 237, 344, 452"
+                ]
+            }
+        },
+        {
+            "camelotModel": "genial_bovespa",
+            "camelotConfig": {
+                "areas": [
+                    "453, 801, 578, 784",
+                    "178, 782, 578, 718",
+                    "35, 716, 452, 680",
+                    "456, 716, 578, 680",
+                    "35, 632, 578, 376",
+                    "36, 370, 305, 262",
+                    "309, 369, 577, 166"
+                ],
+                "columns": [
+                    "490, 520",
+                    "",
+                    "114",
+                    "492,537",
+                    "46, 85, 103, 182, 205, 340, 370, 434, 490, 564",
+                    "186",
+                    "512"
+                ]
+            }
+        },
+        {
+            "camelotModel": "agora_bovespa",
+            "camelotConfig": {
+                "areas": [
+                    "444, 796, 558, 778",
+                    "153, 774, 558, 718",
+                    "38, 714, 410, 680",
+                    "411, 714, 558, 678",
+                    "36, 626, 558, 315",
+                    "36, 312, 298, 218",
+                    "300, 310, 558, 132"
+                ],
+                "columns": [
+                    "486, 518",
+                    "",
+                    "114",
+                    "470,518",
+                    "44, 116, 134, 190, 214, 308, 338, 388, 444, 544",
+                    "186",
+                    "512"
+                ]
+            }
+        }
+    ],
+    "transforms": [
+        {
+            "headers": [
+                {
+                    "headerModel": "default",
+                    "headerDict": {
+                        "invoice_number": "i,0,[1,0]",
+                        "date": "s,0,[1,2]",
+                        "sheet": "i,0,[1,1]",
+                        "client_id": "s,3,[1,1]",
+                        "client_name": "s,2,[1,1]",
+                        "account_number": "s,2,[1,0]",
+                        "broker_id": "s,3,[3, 0]",
+                        "broker_name": "s,3,[0, 0]"
+                    }
+                }
+            ],
+            "transactions": [
+                {
+                    "transactionsModel": "bmf",
+                    "transactionsTable": 4,
+                    "transactionsDict": {
+                        "drop": "[0, 5, 6, 9]",
+                        "reorder": "[2, 1, 3, 4, 7, 8]"
+                    }
+                },
+                {
+                    "transactionsModel": "bovespa",
+                    "transactionsTable": 4,
+                    "transactionsDict": {
+                        "drop": "[0, 1, 2, 3, 6]",
+                        "reorder": ""
+                    }
+                }
+            ],
+            "summaries": [
+                {
+                    "summaryModel": "bmf",
+                    "summaryTable": 6,
+                    "summaryDict": {
+                        "total_transactions": "líquido das operações",
+                        "total_cblc": "CBLC",
+                        "settlement_fee": "Taxa de liquidação",
+                        "registration_fee": "Taxa de Registro",
+                        "term_options_rate": "termo/opções",
+                        "emolumentos": "Emolumentos",
+                        "clearing": "Clearing",
+                        "iss_pis_cofins_taxes": "ISS/PIS/COFINS",
+                        "irrf_tax": "IRRF s/ operações",
+                        "total_net": "Líquido para"
+                    }
+                },
+                {
+                    "summaryModel": "bovespa",
+                    "summaryTable": 6,
+                    "summaryDict": {
+                        "total_transactions": "líquido das operações",
+                        "total_cblc": "CBLC",
+                        "settlement_fee": "Taxa de liquidação",
+                        "registration_fee": "Taxa de Registro",
+                        "term_options_rate": "termo/opções",
+                        "emolumentos": "Emolumentos",
+                        "clearing": "Clearing",
+                        "iss_pis_cofins_taxes": "ISS/PIS/COFINS",
+                        "irrf_tax": "IRRF s/ operações",
+                        "total_net": "Líquido para"
+                    }
+                }
+            ]
+        }
+    ]
+}

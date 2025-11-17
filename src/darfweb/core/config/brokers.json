@@ -1,0 +1,83 @@
+{
+  "brokers": [
+    {
+      "brokerId": "85-0",
+      "brokerAlias": "BTG Pactual",
+      "searchPattern": ["BTG", "85-0"],
+      "searchAll": true,
+      "invoiceTypes": [
+        {
+          "invoiceType": "btg_bmf",
+          "searchPattern": ["BM&F"],
+          "searchAll": true,
+          "models": {
+            "camelotModel": "btg_bmf",
+            "headerModel": "default",
+            "transactionsModel": "bmf",
+            "summaryModel": "bmf"
+          }
+        },
+        {
+          "invoiceType": "btg_bovespa",
+          "searchPattern": ["BOVESPA", "Bovespa"],
+          "searchAll": false,
+          "models": {
+            "camelotModel": "genial_bovespa",
+            "headerModel": "default",
+            "transactionsModel": "bovespa",
+            "summaryModel": "bovespa"
+          }
+        }
+      ]
+    },
+    {
+      "brokerId": "120-1",
+      "brokerAlias": "Genial",
+      "searchPattern": ["GENIAL", "120-1"],
+      "searchAll": true,
+      "invoiceTypes": [
+        {
+          "invoiceType": "genial_bmf",
+          "searchPattern": ["BM&F"],
+          "searchAll": true,
+          "models": {
+            "camelotModel": "genial_bmf",
+            "headerModel": "default",
+            "transactionsModel": "bmf",
+            "summaryModel": "bmf"
+          }
+        },
+        {
+          "invoiceType": "genial_bovespa",
+          "searchPattern": ["B3 RV LISTADO", "B3 RF LISTADO"],
+          "searchAll": false,
+          "models": {
+            "camelotModel": "genial_bovespa",
+            "headerModel": "default",
+            "transactionsModel": "bovespa",
+            "summaryModel": "bovespa"
+          }
+        }
+      ]
+    },
+    {
+      "brokerId": "39-6",
+      "brokerAlias": "Agora",
+      "searchPattern": ["AGORA", "39-6"],
+      "searchAll": true,
+      "invoiceTypes": [
+        {
+          "invoiceType": "agora_bovespa",
+          "searchPattern": ["B3 RV LISTADO", "B3 RF LISTADO"],
+          "searchAll": false,
+          "models": {
+            "camelotModel": "agora_bovespa",
+            "headerModel": "default",
+            "transactionsModel": "bovespa",
+            "summaryModel": "bovespa"
+          }
+        }
+      ]
+    }
+  ]
+}

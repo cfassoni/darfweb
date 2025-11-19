@@ -1,10 +1,11 @@
 import json
 import magic
 import os
+import pdfplumber
 
 from io import BytesIO
 from pathlib import Path
-from PyPDF2 import PdfReader
+# from PyPDF2 import PdfReader
 
 from darfweb.core.exceptions import ParsingError
 
@@ -57,7 +58,7 @@ class SinacorService:
                 raise ValueError("File must be a PDF document")
 
             pdf_stream = BytesIO(content)
-            reader = PdfReader(pdf_stream)
+            reader = pdfplumber.open(pdf_stream)
             self.num_pages = len(reader.pages)
             self.pages = reader.pages
             self.detect = {

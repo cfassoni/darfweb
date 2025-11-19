@@ -25,7 +25,7 @@ def cli() -> None:
         "-d",
         "--detect",
         action="store_true",
-        help="Detect brokers and statement types",
+        help="Detect brokers and brokerage notes types",
         default=True,
     )
     sinacor_parser.add_argument(
@@ -76,10 +76,10 @@ def handle_sinacor(args: argparse.Namespace) -> None:
         print(f"done. File has {sinacor_service.num_pages} page(s).")
 
         if args.detect and sinacor_service.is_detected:
-            print("Detected broker and statement type:")
+            print("Detected broker and note type:")
             for page in sinacor_service.detected:
                 print(
-                    f"    Page {page.get('page', 'N/A')}: Broker: {page.get('brokerAlias', 'N/A')}, Invoice Type: {page.get('invoiceType', 'N/A')}"
+                    f"    Page {page.get('page', 'N/A')}: Broker: {page.get('brokerAlias', 'N/A')}, Type: {page.get('invoiceType', 'N/A')}"
                 )
         if args.extract:
             print(f"Extracting data from {filename} to JSON...")
@@ -87,8 +87,13 @@ def handle_sinacor(args: argparse.Namespace) -> None:
             print(f"Output will be saved to {output_file}")
             # Placeholder for extraction logic
         if args.view:
-            print(f"Visualizing Sinacor Statement from {filename}...")
+            print(f"Visualizing Sinacor Statement from {filename}...\n")
             # Placeholder for visualization logic
+            for page in sinacor_service.pages:
+                text = page.extract_text().lower()
+                print(f"--- Page {sinacor_service.pages.index(page) + 1} ---")
+                print(text)
+                print("-------------------------\n")
 
     except Exception as e:
         print(f"Error: {e}")

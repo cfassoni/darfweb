@@ -8,7 +8,12 @@ authors = [
 ]
 requires-python = ">=3.13"
 dependencies = [
-    "pydantic>=2.0"
+    "google-genai>=1.51.0",
+    "ollama>=0.6.1",
+    "pdfplumber>=0.11.8",
+    "pydantic>=2.0",
+    "python-magic-bin>=0.4.14",
+    # "pypdf2>=3.0.0",
 ]
 
 [project.scripts]
@@ -29,13 +34,9 @@ api = [
 cli = [
  "argparse>=1.4.0",
 ]
-core = [
-    "pypdf2>=3.0.0",
-    "python-magic-bin>=0.4.14",
-]
 
 [dependency-groups]
 dev = [
-    "darfweb[api,cli,core]",
+    "darfweb[api,cli]",
     "ipykernel>=7.1.0",
 ]

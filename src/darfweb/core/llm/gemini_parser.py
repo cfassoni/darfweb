@@ -1,6 +1,7 @@
 import os
 from google import genai
 from google.genai import types
+from typing import Optional
 
 from darfweb.core.llm.base import ILlmParser
 from darfweb.core.models import BrokerageStatement
@@ -27,7 +28,7 @@ class GeminiParser(ILlmParser):
 
     def __init__(
         self,
-        api_key: str = None,
+        api_key: Optional[str] = None,
         model: str = "gemini-2.5-flash",
         rules: str = GEMINI_RULES,
     ):
@@ -79,6 +80,9 @@ class GeminiParser(ILlmParser):
             contents=prompt,
         )
         try:
-            return BrokerageStatement.model_validate_json(response.text)
+            response_text = response.text
+            if response_text is None:
+                raise ValueError("Empty response from model")
+            return BrokerageStatement.model_validate_json(response_text)
         except Exception as e:
             raise e

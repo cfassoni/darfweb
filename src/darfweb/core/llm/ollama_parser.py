@@ -1,4 +1,6 @@
 import ollama
+from ollama import ChatResponse
+from typing import Optional
 
 from darfweb.core.llm.base import ILlmParser
 from darfweb.core.models import BrokerageStatement
@@ -22,7 +24,7 @@ class OllamaParser(ILlmParser):
 
     def __init__(
         self,
-        model: str = None,
+        model: Optional[str] = None,
         rules: str = OLLAMA_RULES,
         host: str = "http://localhost:11434",
         timeout: int = 60,
@@ -51,7 +53,7 @@ class OllamaParser(ILlmParser):
     def list_models(self) -> list[str]:
         """Returns a list of available Ollama models."""
         models_list = self.client.list()
-        models = [m.model for m in models_list.models]
+        models = [str(m.model) for m in models_list.models if m.model is not None]
         return models
 
     def get_parsed_data(self, pdf_text: str) -> BrokerageStatement:
@@ -64,17 +66,16 @@ class OllamaParser(ILlmParser):
         ### INPUT TEXT
         {pdf_text}
         """
-        response = self.client.chat(
+        response: ChatResponse = self.client.chat(  # type: ignore[misc]
             model=self._model,
             messages=[{"role": "user", "content": prompt}],
             format=BrokerageStatement.model_json_schema(),
             options={"temperature": 0},
+            stream=False,
         )
-        raw_json = response["message"]["content"]
+        raw_json = response.message.content
 
-        try:
-            return BrokerageStatement.model_validate_json(raw_json)
-        # finally:
-        #     return raw_json
-        except Exception as e:
-            raise e
+        if raw_json is None:
+            raise ValueError("Empty response from Ollama model")
+
+        return BrokerageStatement.model_validate_json(raw_json)

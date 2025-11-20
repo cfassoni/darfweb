@@ -1,7 +1,8 @@
+from typing import Any
 from darfweb.core.llm import ILlmParser, GeminiParser, OllamaParser
 
 
-def get_parser(llm: str, **kwargs) -> ILlmParser:
+def get_parser(llm: str, **kwargs: Any) -> ILlmParser:
     """Factory function to get the appropriate LLM parser based"""
 
     llm = llm.lower()

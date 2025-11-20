@@ -19,7 +19,7 @@ class SinacorService:
         filename: str | None = None,
         filecontent: bytes | None = None,
         autodetect: bool = True,
-    ):
+    ) -> None:
         """Initialize the service with a file path or file content."""
 
         config_file = (
@@ -52,7 +52,7 @@ class SinacorService:
 
             # Check MIME type
             mime_type = magic.from_buffer(content, mime=True)
-            if (not filename.lower().endswith(".pdf")) or (
+            if (filename is None or not filename.lower().endswith(".pdf")) or (
                 mime_type != "application/pdf"
             ):
                 raise ValueError("File must be a PDF document")
@@ -61,14 +61,14 @@ class SinacorService:
             reader = pdfplumber.open(pdf_stream)
             self.num_pages = len(reader.pages)
             self.pages = reader.pages
-            self.detect = {
+            self.detect: dict[str, str | int] = {
                 "filename": filename,
                 "numPages": self.num_pages,
             }
         except Exception as e:
             raise ParsingError(f"Failed to validate {filename}: {e}")
 
-    def __load_config(self, config_file: Path) -> dict:
+    def __load_config(self, config_file: Path) -> dict[str, str]:
         """Load JSON configuration file"""
 
         try:
@@ -84,7 +84,7 @@ class SinacorService:
         except Exception as e:
             raise RuntimeError(f"Error loading config file: {e}")
 
-    def __find_models(self, broker, invoice_type):
+    def __find_models(self, broker: str, invoice_type: str):
         brokers_dict = self.__config
 
         # Find broker and invoice type in config using list comprehension
@@ -108,13 +108,13 @@ class SinacorService:
             )
         return invoice_config["models"]
 
-    def __find_pattern(self, pattern, text, find_all: bool = False):
+    def __find_pattern(self, pattern: str, text: str, find_all: bool = False):
         if find_all:
             return all(p in text for p in pattern)
         return any(p in text for p in pattern)
 
-    def __autodetect(self) -> list[dict]:
-        result = []
+    def __autodetect(self) -> list[dict[str, str | int]]:
+        result: list[dict[str, str | int]] = []
         brokers = self.__config.get("brokers", [])
 
         for p in range(self.num_pages):

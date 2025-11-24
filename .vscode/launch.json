@@ -45,7 +45,7 @@
       "id": "sinacorViewFile",
       "type": "promptString",
       "description": "Enter the path to the Sinacor file",
-      "default": "${workspaceFolder}/notebooks/notas/nota_btg_spot_test.pdf"
+      "default": "${workspaceFolder}/notebooks/notas/modelo_btg_spot.pdf"
     }
   ]
 }

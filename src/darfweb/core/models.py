@@ -1,5 +1,7 @@
 # models.py
 from __future__ import annotations
+
+# from decimal import Decimal
 from enum import Enum
 from typing import List, Optional
 from datetime import date, datetime
@@ -18,9 +20,9 @@ class CompraVenda(str, Enum):
     VENDA = "V"
 
 
-class DebitoCredito(str, Enum):
-    DEBITO = "D"
+class CreditoDebito(str, Enum):
     CREDITO = "C"
+    DEBITO = "D"
 
 
 class TipoMercado(str, Enum):
@@ -34,10 +36,33 @@ class TipoMercado(str, Enum):
 # --- Nested Components ---
 
 
+# class Valor(BaseModel):
+#     valor: Decimal
+#     cd: CreditoDebito
+
+#     @field_validator("valor", mode="before")
+#     @classmethod
+#     def make_valor_absolute(cls, v: float) -> float:
+#         return abs(v)
+
+
 class Corretora(BaseModel):
     cnpj: str = Field(..., description="CNPJ only numbers")
     nome_social: str
-    codigo: str
+    codigo: str = Field(
+        ..., description="Format XXX-X (2-3 digits, dash, digit, e.g. '123-4')"
+    )
+
+    @field_validator("codigo", mode="before")
+    @classmethod
+    def validate_codigo(cls, v: str) -> Optional[str]:
+        import re
+
+        # Look for pattern: 2 or 3 digits, dash, 1 digit
+        match = re.search(r"(\d{2,3}-\d)", v)
+        if match:
+            return match.group(1)
+        return None
 
     @field_validator("cnpj", mode="before")
     @classmethod
@@ -68,7 +93,7 @@ class Negocio(BaseModel):
     quantidade: int
     preco_ajuste: float
     valor_operacao_ajuste: float
-    dc: DebitoCredito
+    dc: CreditoDebito
 
 
 class ResumoNegocios(BaseModel):
@@ -134,8 +159,8 @@ class ResumoFinanceiro(BaseModel):
 
 
 class Nota(BaseModel):
-    nr_nota: str
-    folha: str
+    nr_nota: int
+    folha: int
     data_pregao: date
     corretora: Corretora
     cliente: Cliente
@@ -156,5 +181,6 @@ class Pagina(BaseModel):
 class BrokerageStatement(BaseModel):
     arquivo: str
     data_extracao: datetime
+    sha1: str
     total_de_paginas: int
     paginas: List[Pagina]

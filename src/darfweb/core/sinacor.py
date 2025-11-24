@@ -1,5 +1,5 @@
 import json
-import magic
+import magic  # type: ignore
 import os
 import pdfplumber
 
@@ -51,11 +51,12 @@ class SinacorService:
                 raise ValueError("File is empty")
 
             # Check MIME type
-            mime_type = magic.from_buffer(content, mime=True)
+            mime_type: str = magic.from_buffer(content, mime=True)  # type: ignore
+
             if (filename is None or not filename.lower().endswith(".pdf")) or (
                 mime_type != "application/pdf"
             ):
-                raise ValueError("File must be a PDF document")
+                raise ValueError(f"File must be a PDF document ({mime_type})")
 
             pdf_stream = BytesIO(content)
             reader = pdfplumber.open(pdf_stream)
